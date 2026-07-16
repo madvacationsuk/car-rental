@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAD Vacations — Self-Drive Car Rental in Wembley, London | SEAT Ateca SUV Hire</title>
+<meta name="description" content="MAD Vacations — 5★ rated self-drive car rental in Wembley Park, London. Hire our immaculately maintained SEAT Ateca EVO Xperience SUV by the hour, day, week or month. Airport pick-ups available.">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MAD VACATIONS — design tokens
+   ============================================================ */
+:root{
+  --ink:#0e0f13;          /* page background */
+  --panel:#16171d;        /* card background */
+  --panel-2:#1c1e26;      /* raised card */
+  --line:rgba(212,175,55,.28);
+  --gold:#d4af37;
+  --gold-deep:#9a7420;
+  --gold-pale:#f0d98c;
+  --cream:#f4ecd9;
+  --muted:#a49c8e;
+  --green:#7ec97e;
+  --amber:#e8b451;
+  --red:#e07a6b;
+  --radius:18px;
+  --wrap:1160px;
+  --display:'Cormorant Garamond', Georgia, serif;
+  --body:'Jost', 'Segoe UI', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--cream);
+  font-family:var(--body);
+  font-weight:300;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:var(--gold-pale);text-decoration:none}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.12;letter-spacing:.01em}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;
+}
+.eyebrow::before{content:"";width:34px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.section{padding:88px 0}
+.section-head{max-width:640px;margin-bottom:44px}
+.section-head h2{font-size:clamp(2rem,4vw,2.9rem);margin-top:14px}
+.section-head p{color:var(--muted);margin-top:12px}
+
+.gold-text{
+  background:linear-gradient(100deg,#8a6a1e 0%, #d4af37 35%, #f6e6a8 52%, #d4af37 70%, #8a6a1e 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 28px;border-radius:999px;
+  font-family:var(--body);font-weight:500;font-size:.95rem;letter-spacing:.04em;
+  cursor:pointer;transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+  border:1px solid transparent;
+}
+.btn-gold{
+  background:linear-gradient(120deg,#b78a28,#e9cf7d 45%,#c49a33);
+  color:#161206;box-shadow:0 8px 26px rgba(212,175,55,.28);
+}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(212,175,55,.4)}
+.btn-ghost{border-color:var(--line);color:var(--cream);background:rgba(255,255,255,.02)}
+.btn-ghost:hover{background:rgba(212,175,55,.1)}
+.btn-wa{background:#1fae52;color:#fff;box-shadow:0 8px 24px rgba(31,174,82,.3)}
+.btn-wa:hover{transform:translateY(-2px)}
+
+/* ============ NAV ============ */
+.nav{
+  position:fixed;inset:0 0 auto 0;z-index:60;
+  backdrop-filter:blur(14px);
+  background:rgba(13,14,18,.72);
+  border-bottom:1px solid rgba(212,175,55,.14);
+}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:72px;max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:48px;width:48px;object-fit:contain}
+.brand-name{font-family:var(--display);font-weight:700;font-size:1.25rem;letter-spacing:.14em}
+.brand-sub{display:block;font-family:var(--body);font-weight:400;font-size:.58rem;letter-spacing:.42em;text-transform:uppercase;color:var(--gold)}
+.nav-links{display:flex;gap:30px;align-items:center;font-size:.86rem;letter-spacing:.06em}
+.nav-links a{color:var(--cream);opacity:.82;font-weight:400}
+.nav-links a:hover{opacity:1;color:var(--gold-pale)}
+.nav-links a.btn-gold{color:#161206;opacity:1}
+.nav-cta{padding:10px 20px;font-size:.82rem}
+.nav-toggle{display:none;background:none;border:none;color:var(--gold);font-size:1.6rem;cursor:pointer}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden;
+  background:linear-gradient(180deg,#0b0c14 0%, #131126 34%, #3a2140 58%, #7c3b45 74%, #c96b3f 88%, #e8964e 100%);
+}
+.hero-sky{position:absolute;inset:0;pointer-events:none}
+.hero-sky svg{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:max(1600px,120vw);height:auto}
+.hero-grade{position:absolute;inset:0;background:radial-gradient(120% 65% at 50% 108%, rgba(244,196,110,.32), transparent 60%);pointer-events:none}
+.hero-in{
+  position:relative;z-index:3;width:100%;max-width:var(--wrap);margin:0 auto;
+  padding:150px 24px 0;display:grid;grid-template-columns:1.05fr .95fr;gap:20px;align-items:center;
+}
+.hero-copy{padding-bottom:120px;text-shadow:0 2px 22px rgba(8,8,12,.65)}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;
+  border:1px solid var(--line);border-radius:999px;padding:8px 18px;
+  font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-pale);
+  background:rgba(14,15,19,.5);
+}
+.hero h1{font-size:clamp(2.7rem,5.6vw,4.6rem);font-weight:600}
+.hero h1 em{font-style:italic;font-weight:500}
+.hero-sub{margin:20px 0 30px;max-width:480px;color:#efe3cd;font-size:1.06rem}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.hero-ratings{display:flex;gap:26px;margin-top:34px;flex-wrap:wrap}
+.rating-chip{display:flex;flex-direction:column;gap:2px}
+.rating-chip .stars{color:var(--gold);letter-spacing:3px;font-size:.95rem}
+.rating-chip span{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:#e9dcc2}
+.hero-car{position:relative;z-index:3;align-self:end}
+.hero-car img{
+  width:118%;max-width:none;margin-left:-9%;
+  filter:drop-shadow(0 42px 42px rgba(0,0,0,.55));
+  animation:carIn 1.2s cubic-bezier(.22,.8,.3,1) both .2s;
+}
+@keyframes carIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:none}}
+.hero-ground{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(180deg,transparent,#0e0f13 78%);z-index:2}
+.scroll-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:4;color:var(--gold-pale);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;opacity:.75}
+
+/* ============ MARQUEE STRIP ============ */
+.strip{border-block:1px solid var(--line);background:linear-gradient(90deg,rgba(212,175,55,.08),rgba(212,175,55,.02));padding:16px 0;overflow:hidden}
+.strip-in{display:flex;gap:56px;white-space:nowrap;animation:slide 30s linear infinite;width:max-content}
+.strip span{font-size:.8rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-pale)}
+.strip i{color:var(--gold);font-style:normal}
+@keyframes slide{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){
+  .strip-in{animation:none}
+  .hero-car img{animation:none}
+  html{scroll-behavior:auto}
+}
+
+/* ============ FEATURES ============ */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feat{
+  border:1px solid rgba(212,175,55,.18);border-radius:var(--radius);
+  background:linear-gradient(160deg,var(--panel-2),var(--panel));
+  padding:30px 26px;transition:transform .25s ease,border-color .25s ease;
+}
+.feat:hover{transform:translateY(-4px);border-color:var(--line)}
+.feat-ic{
+  width:52px;height:52px;border-radius:50%;display:grid;place-items:center;margin-bottom:18px;
+  border:1px solid var(--line);color:var(--gold);background:rgba(212,175,55,.06);
+}
+.feat-ic svg{width:24px;height:24px}
+.feat h3{font-size:1.35rem;margin-bottom:6px}
+.feat p{color:var(--muted);font-size:.94rem}
+
+/* ============ OFFER BANNERS ============ */
+.offers{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-top:18px}
+.offer{
+  border-radius:var(--radius);padding:26px;display:flex;gap:16px;align-items:flex-start;
+  border:1px solid var(--line);background:var(--panel);
+}
+.offer.dashed{border-style:dashed;background:rgba(212,175,55,.05)}
+.offer h3{font-size:1.3rem}
+.offer p{color:var(--muted);font-size:.92rem;margin-top:4px}
+.book-direct{
+  margin-top:26px;border-radius:12px;padding:15px 22px;text-align:center;
+  background:linear-gradient(90deg,#a37c22,#ecd383 50%,#a37c22);
+  color:#181205;font-weight:500;letter-spacing:.05em;font-size:.95rem;
+}
+
+/* ============ GALLERY ============ */
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:190px;gap:14px}
+.gallery a{position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(212,175,55,.16);display:block}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.gallery a:hover img{transform:scale(1.05)}
+.gallery a:nth-child(1){grid-column:span 2;grid-row:span 2}
+.gallery a:nth-child(4){grid-row:span 2}
+.gallery figcaption{
+  position:absolute;inset:auto 0 0 0;padding:22px 14px 10px;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
+  background:linear-gradient(180deg,transparent,rgba(10,10,14,.85));color:var(--gold-pale);
+}
+.lightbox{
+  position:fixed;inset:0;z-index:100;display:none;place-items:center;background:rgba(8,8,11,.92);padding:30px;
+}
+.lightbox.open{display:grid}
+.lightbox img{max-width:min(1100px,92vw);max-height:84vh;border-radius:12px;border:1px solid var(--line)}
+.lightbox button{
+  position:absolute;top:22px;right:26px;background:none;border:1px solid var(--line);color:var(--cream);
+  width:44px;height:44px;border-radius:50%;font-size:1.2rem;cursor:pointer;
+}
+
+/* ============ CALENDAR ============ */
+.cal-wrap{display:grid;grid-template-columns:1.35fr .65fr;gap:34px;align-items:start}
+.cal-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);padding:26px}
+.cal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.cal-top h3{font-size:1.6rem}
+.cal-nav{display:flex;gap:8px}
+.cal-nav button{
+  width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--gold);
+  font-size:1.05rem;cursor:pointer;transition:background .2s;
+}
+.cal-nav button:hover{background:rgba(212,175,55,.12)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-dow{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center;padding:8px 0}
+.cal-day{
+  aspect-ratio:1/.86;border-radius:10px;border:1px solid rgba(255,255,255,.06);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  font-size:.92rem;background:rgba(255,255,255,.015);position:relative;
+}
+.cal-day.blank{border:none;background:none}
+.cal-day.past{opacity:.32}
+.cal-day .dot{width:8px;height:8px;border-radius:50%}
+.cal-day.free{border-color:rgba(126,201,126,.35)}
+.cal-day.free .dot{background:var(--green)}
+.cal-day.partial{border-color:rgba(232,180,81,.4);background:rgba(232,180,81,.06)}
+.cal-day.partial .dot{background:var(--amber)}
+.cal-day.booked{border-color:rgba(224,122,107,.4);background:rgba(224,122,107,.07);color:#d8c9c4}
+.cal-day.booked .dot{background:var(--red)}
+.cal-day.unknown{opacity:.55}
+.cal-day.unknown .dot{background:#5c5a54}
+.cal-day.today::after{content:"";position:absolute;inset:3px;border:1px solid var(--gold);border-radius:8px;pointer-events:none}
+.cal-legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px;font-size:.82rem;color:var(--muted)}
+.cal-legend span{display:inline-flex;align-items:center;gap:8px}
+.cal-legend i{width:10px;height:10px;border-radius:50%;font-style:normal}
+.cal-note{margin-top:14px;font-size:.8rem;color:var(--muted)}
+.cal-status{font-size:.8rem;color:var(--muted);margin-top:8px}
+.cal-side h3{font-size:1.7rem;margin-top:14px}
+.cal-side p{color:var(--muted);margin-top:12px;font-size:.95rem}
+.cal-side .btn{margin-top:22px}
+
+/* ============ REVIEWS ============ */
+.review-badges{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:34px}
+.badge-card{
+  border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(150deg,var(--panel-2),var(--panel));
+  padding:30px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.badge-card .stars{color:var(--gold);font-size:1.5rem;letter-spacing:5px}
+.badge-card h3{font-size:1.5rem}
+.badge-card p{color:var(--muted);font-size:.9rem}
+.badge-card .score{font-family:var(--display);font-size:3rem;font-weight:700;color:var(--gold-pale);line-height:1}
+.testimonials{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tst{border:1px solid rgba(212,175,55,.16);border-radius:var(--radius);padding:26px;background:var(--panel)}
+.tst .stars{color:var(--gold);letter-spacing:3px;margin-bottom:12px}
+.tst p{font-size:.95rem;color:#ded4c0;font-style:italic}
+.tst footer{margin-top:16px;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.review-links{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
+
+/* ============ WHATSAPP ============ */
+.wa-band{
+  border-block:1px solid var(--line);
+  background:radial-gradient(80% 140% at 50% 0%, rgba(212,175,55,.1), transparent 70%), var(--panel);
+}
+.wa-in{display:grid;grid-template-columns:1fr auto;gap:44px;align-items:center;padding:70px 0}
+.wa-in h2{font-size:clamp(1.9rem,3.6vw,2.7rem);margin-top:14px}
+.wa-in p{color:var(--muted);margin:14px 0 26px;max-width:520px}
+.wa-phone{font-family:var(--display);font-size:1.7rem;color:var(--gold-pale);font-weight:600;letter-spacing:.04em}
+.qr-card{
+  background:#fff;border-radius:20px;padding:18px;width:236px;box-shadow:0 20px 50px rgba(0,0,0,.45);
+  text-align:center;
+}
+.qr-card img{width:200px;height:200px;margin:0 auto}
+.qr-card span{display:block;color:#333;font-size:.78rem;font-weight:500;margin-top:8px;letter-spacing:.05em}
+
+/* ============ FORM + LOCATION ============ */
+.contact-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:start}
+.form-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);padding:34px}
+.form-card h3{font-size:1.7rem;margin-bottom:6px}
+.form-card > p{color:var(--muted);font-size:.9rem;margin-bottom:24px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.f-group{margin-bottom:16px}
+.f-group label{display:block;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-pale);margin-bottom:7px}
+.f-group input,.f-group textarea,.f-group select{
+  width:100%;background:rgba(255,255,255,.035);border:1px solid rgba(212,175,55,.22);
+  border-radius:10px;padding:13px 15px;color:var(--cream);font-family:var(--body);font-size:.95rem;
+  transition:border-color .2s, background .2s;
+}
+.f-group input:focus,.f-group textarea:focus{outline:none;border-color:var(--gold);background:rgba(212,175,55,.06)}
+.f-group input::placeholder,.f-group textarea::placeholder{color:#6f695f}
+.form-note{font-size:.78rem;color:var(--muted);margin-top:14px}
+.loc-card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--panel)}
+.loc-card iframe{width:100%;height:330px;border:0;display:block;filter:grayscale(.2) contrast(1.02)}
+.loc-info{padding:26px}
+.loc-info h3{font-size:1.5rem;margin-bottom:8px}
+.loc-info p{color:var(--muted);font-size:.94rem}
+.loc-info .addr{color:var(--cream);font-weight:400;margin-bottom:8px}
+
+/* ============ FOOTER ============ */
+footer.site{border-top:1px solid rgba(212,175,55,.16);padding:44px 0 34px;background:#0a0b0f}
+.foot-in{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:center}
+.foot-in small{color:var(--muted);font-size:.8rem}
+.foot-links{display:flex;gap:22px;font-size:.85rem}
+
+/* floating WA button */
+.wa-float{
+  position:fixed;right:22px;bottom:22px;z-index:70;width:58px;height:58px;border-radius:50%;
+  background:#1fae52;display:grid;place-items:center;box-shadow:0 10px 30px rgba(31,174,82,.45);
+  transition:transform .2s;
+}
+.wa-float:hover{transform:scale(1.08)}
+.wa-float svg{width:30px;height:30px;fill:#fff}
+
+/* focus visibility */
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:980px){
+  .hero-in{grid-template-columns:1fr;padding-top:120px}
+  .hero-copy{padding-bottom:0}
+  .hero-car img{width:100%;margin:10px 0 90px}
+  .feat-grid{grid-template-columns:1fr 1fr}
+  .offers{grid-template-columns:1fr}
+  .gallery{grid-template-columns:1fr 1fr;grid-auto-rows:170px}
+  .cal-wrap,.contact-grid{grid-template-columns:1fr}
+  .testimonials{grid-template-columns:1fr}
+  .review-badges{grid-template-columns:1fr}
+  .wa-in{grid-template-columns:1fr;justify-items:start}
+  .nav-links{
+    position:fixed;top:72px;right:0;left:0;flex-direction:column;align-items:flex-start;
+    background:rgba(13,14,18,.97);padding:26px 24px;gap:20px;display:none;border-bottom:1px solid var(--line);
+  }
+  .nav-links.open{display:flex}
+  .nav-toggle{display:block}
+}
+@media (max-width:560px){
+  .feat-grid{grid-template-columns:1fr}
+  .f-row{grid-template-columns:1fr}
+  .section{padding:64px 0}
+  .cal-day{font-size:.8rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top" aria-label="MAD Vacations home">
+      <img src="assets/logo.png" alt="MAD Vacations logo">
+      <span class="brand-name gold-text">MAD VACATIONS
+        <span class="brand-sub">Self-Drive Car Rental</span>
+      </span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="#car">The Car</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#availability">Availability</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Contact</a>
+      <a class="btn btn-gold nav-cta" href="https://wa.me/447405295569" target="_blank" rel="noopener">Book on WhatsApp</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <div class="hero-sky" aria-hidden="true">
+    <!-- Wembley arch + London skyline + setting sun -->
+    <svg viewBox="0 0 1600 620" preserveAspectRatio="xMidYMax meet">
+      <defs>
+        <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffe9a8"/><stop offset="1" stop-color="#f2a33c"/>
+        </linearGradient>
+        <linearGradient id="arch" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#8a6a1e"/><stop offset=".5" stop-color="#ffe08a"/><stop offset="1" stop-color="#8a6a1e"/>
+        </linearGradient>
+      </defs>
+      <circle cx="800" cy="520" r="150" fill="url(#sun)" opacity=".95"/>
+      <circle cx="800" cy="520" r="215" fill="#f9b34c" opacity=".14"/>
+      <!-- skyline silhouettes (Big Ben left, Shard/Gherkin right) -->
+      <g fill="#12101c" opacity=".92">
+        <rect x="0" y="480" width="1600" height="140"/>
+        <rect x="60" y="380" width="46" height="110"/><polygon points="60,380 83,340 106,380"/>
+        <rect x="150" y="430" width="70" height="70"/><rect x="250" y="405" width="55" height="95"/>
+        <rect x="330" y="450" width="90" height="55"/><rect x="1180" y="420" width="60" height="80"/>
+        <polygon points="1290,500 1322,330 1354,500"/> <!-- Shard -->
+        <rect x="1395" y="400" width="52" height="100" rx="22"/> <!-- Gherkin -->
+        <rect x="1480" y="440" width="80" height="65"/><rect x="1105" y="452" width="52" height="52"/>
+      </g>
+      <!-- lit windows -->
+      <g fill="#f5cf7e" opacity=".8">
+        <rect x="166" y="442" width="6" height="8"/><rect x="188" y="458" width="6" height="8"/>
+        <rect x="264" y="418" width="6" height="8"/><rect x="282" y="440" width="6" height="8"/>
+        <rect x="1194" y="434" width="6" height="8"/><rect x="1216" y="456" width="6" height="8"/>
+        <rect x="1496" y="452" width="6" height="8"/><rect x="1524" y="470" width="6" height="8"/>
+      </g>
+      <!-- Wembley arch -->
+      <path d="M 340 505 Q 800 60 1260 505" fill="none" stroke="url(#arch)" stroke-width="10" stroke-linecap="round"/>
+      <path d="M 340 505 Q 800 60 1260 505" fill="none" stroke="#fff3c4" stroke-width="2.5" opacity=".8"/>
+      <!-- arch cables -->
+      <g stroke="#e8c66a" stroke-width="1.4" opacity=".5">
+        <line x1="520" y1="505" x2="536" y2="330"/><line x1="640" y1="505" x2="655" y2="245"/>
+        <line x1="800" y1="505" x2="800" y2="172"/><line x1="960" y1="505" x2="945" y2="245"/>
+        <line x1="1080" y1="505" x2="1064" y2="330"/>
+      </g>
+      <!-- birds -->
+      <g stroke="#2a2438" stroke-width="3" fill="none" stroke-linecap="round">
+        <path d="M470 200 q10 -10 20 0 q10 -10 20 0"/>
+        <path d="M1130 160 q9 -9 18 0 q9 -9 18 0"/>
+        <path d="M1240 250 q8 -8 16 0 q8 -8 16 0"/>
+      </g>
+    </svg>
+  </div>
+  <div class="hero-grade" aria-hidden="true"></div>
+  <div class="hero-ground" aria-hidden="true"></div>
+
+  <div class="hero-in">
+    <div class="hero-copy">
+      <span class="hero-badge">★ Rated 5★ on Turo &amp; Google · Wembley Park, London</span>
+      <h1>Your keys to <em class="gold-text">London</em>, from the foot of the Wembley arch.</h1>
+      <p class="hero-sub">
+        Hire our immaculately maintained <strong>SEAT Ateca EVO Xperience SUV</strong> —
+        self-drive, fully flexible, from a few hours to a few months. Based by Wembley Stadium.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-gold" href="#availability">Check availability</a>
+        <a class="btn btn-ghost" href="https://wa.me/447405295569?text=Hi%20MAD%20Vacations!%20I'd%20like%20a%20quote%20for%20the%20SEAT%20Ateca." target="_blank" rel="noopener">Get an instant quote</a>
+      </div>
+      <div class="hero-ratings">
+        <div class="rating-chip"><span class="stars">★★★★★</span><span>5.0 on Google</span></div>
+        <div class="rating-chip"><span class="stars">★★★★★</span><span>5.0 on Turo</span></div>
+        <div class="rating-chip"><span class="stars">✈</span><span>Airport pick-ups</span></div>
+      </div>
+    </div>
+    <div class="hero-car">
+      <img src="assets/car-hero.png" alt="White SEAT Ateca EVO Xperience SUV available for self-drive hire from MAD Vacations, Wembley">
+    </div>
+  </div>
+  <span class="scroll-hint">Scroll</span>
+</header>
+
+<!-- ================= STRIP ================= -->
+<div class="strip" aria-hidden="true">
+  <div class="strip-in">
+    <span>Automatic <i>·</i></span><span>Wireless CarPlay &amp; Android Auto <i>·</i></span><span>Wireless charging <i>·</i></span><span>Adaptive cruise control <i>·</i></span><span>Child seat on request <i>·</i></span><span>Airport pick-up &amp; drop-off <i>·</i></span><span>Hours to months <i>·</i></span>
+    <span>Automatic <i>·</i></span><span>Wireless CarPlay &amp; Android Auto <i>·</i></span><span>Wireless charging <i>·</i></span><span>Adaptive cruise control <i>·</i></span><span>Child seat on request <i>·</i></span><span>Airport pick-up &amp; drop-off <i>·</i></span><span>Hours to months <i>·</i></span>
+  </div>
+</div>
+
+<!-- ================= THE CAR ================= -->
+<section class="section" id="car">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">The Car</span>
+      <h2>SEAT Ateca EVO <span class="gold-text">Xperience</span> SUV</h2>
+      <p>Comfortable, safe, premium — and proudly maintained to an immaculate standard between every single hire.</p>
+    </div>
+    <div class="feat-grid">
+      <article class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><path d="M6 8v8M12 8v4m0 0H6m6 0h6V8"/></svg></div>
+        <h3>Automatic transmission</h3>
+        <p>An effortless drive through London traffic and beyond — no clutch, no fuss.</p>
+      </article>
+      <article class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M12 18h.01M4 8a10 10 0 0 1 0 8M20 8a10 10 0 0 0 0 8" stroke-linecap="round"/></svg></div>
+        <h3>Wireless CarPlay &amp; Android Auto</h3>
+        <p>Your music and maps on the built-in display the moment you step in — no cables needed.</p>
+      </article>
+      <article class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8" y="3" width="8" height="18" rx="2"/><path d="M12.5 8l-2 4h3l-2 4" stroke-linejoin="round"/></svg></div>
+        <h3>Wireless phone charger</h3>
+        <p>Drop your phone on the pad and arrive with a full battery — power on the go.</p>
+      </article>
+      <article class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 15h13.5a2.5 2.5 0 0 0 0-5H8l3-4" stroke-linecap="round"/><path d="M3 19h18" stroke-linecap="round" stroke-dasharray="2 3"/></svg></div>
+        <h3>Adaptive cruise control</h3>
+        <p>Relaxed motorway miles — the Ateca keeps pace and distance for you.</p>
+      </article>
+      <article class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 4c2 0 3 1.5 3 3.5S9 12 9 14s1.5 4 4.5 4H17" stroke-linecap="round"/><circle cx="17" cy="18" r="2.6"/><circle cx="7" cy="4" r="1.6"/></svg></div>
+        <h3>Child seat on request</h3>
+        <p>Travelling with little ones? Ask when booking and we'll fit a child seat, free of charge.</p>
+      </article>
+      <article class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 20h18M4 15l16-5.5M10 12.5 8 6l2.5-.8L14 11" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Airport pick-up &amp; drop-off</h3>
+        <p>Land, collect your keys and start driving the moment you arrive. Returns at the terminal too.</p>
+      </article>
+    </div>
+
+    <div class="offers">
+      <div class="offer">
+        <div class="feat-ic" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round"/></svg></div>
+        <div><h3>Hours to months</h3><p>Truly flexible rentals tailored to your plans — an afternoon errand, a weekend escape or a long-term arrangement.</p></div>
+      </div>
+      <div class="offer">
+        <div class="feat-ic" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-4.6-7-10a7 7 0 0 1 14 0c0 5.4-7 10-7 10z"/><circle cx="12" cy="11" r="2.6"/></svg></div>
+        <div><h3>Based by Wembley Stadium</h3><p>Pink Parking, 15 South Way, Wembley HA9 0HX — with free parking near the stadium.</p></div>
+      </div>
+      <div class="offer dashed">
+        <div class="feat-ic" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M19 5 5 19" stroke-linecap="round"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg></div>
+        <div><h3>Wembley Park residents</h3><p>Exclusive local discount — just mention it when booking!</p></div>
+      </div>
+    </div>
+    <div class="book-direct">BOOK DIRECT &amp; SAVE — skip the commissions charged by rental apps.</div>
+  </div>
+</section>
+
+<!-- ================= GALLERY ================= -->
+<section class="section" id="gallery" style="padding-top:20px">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Gallery</span>
+      <h2>Immaculately <span class="gold-text">maintained</span>, inside &amp; out</h2>
+      <p>What you see is exactly what you collect. Tap any photo to view it full size.</p>
+    </div>
+    <div class="gallery">
+      <a href="#" data-lb><img src="assets/04.jpg" alt="SEAT Ateca front three-quarter view" loading="lazy"><figcaption>Front — SEAT Ateca EVO Xperience</figcaption></a>
+      <a href="#" data-lb><img src="assets/03.jpg" alt="SEAT Ateca front view with LED headlights" loading="lazy"><figcaption>LED headlights</figcaption></a>
+      <a href="#" data-lb><img src="assets/02.jpg" alt="SEAT Ateca rear three-quarter view" loading="lazy"><figcaption>Rear profile</figcaption></a>
+      <a href="#" data-lb><img src="assets/10.jpg" alt="SEAT Ateca dashboard and steering wheel" loading="lazy"><figcaption>Driver's cockpit</figcaption></a>
+      <a href="#" data-lb><img src="assets/09.jpg" alt="SEAT Ateca front seats in leather and alcantara" loading="lazy"><figcaption>Front seats</figcaption></a>
+      <a href="#" data-lb><img src="assets/12.jpg" alt="SEAT Ateca infotainment screen with navigation" loading="lazy"><figcaption>Navigation &amp; CarPlay</figcaption></a>
+      <a href="#" data-lb><img src="assets/14.jpg" alt="SEAT Ateca rear seats" loading="lazy"><figcaption>Spacious rear seats</figcaption></a>
+      <a href="#" data-lb><img src="assets/07.jpg" alt="SEAT Ateca rear view" loading="lazy"><figcaption>Rear view</figcaption></a>
+    </div>
+  </div>
+</section>
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Image viewer">
+  <button aria-label="Close" onclick="closeLB()">✕</button>
+  <img src="" alt="Enlarged car photo" id="lb-img">
+</div>
+
+<!-- ================= AVAILABILITY ================= -->
+<section class="section" id="availability" style="background:linear-gradient(180deg,transparent,rgba(212,175,55,.03))">
+  <div class="wrap cal-wrap">
+    <div class="cal-card">
+      <div class="cal-top">
+        <h3 id="cal-title">Month</h3>
+        <div class="cal-nav">
+          <button aria-label="Previous month" onclick="moveMonth(-1)">‹</button>
+          <button aria-label="Next month" onclick="moveMonth(1)">›</button>
+        </div>
+      </div>
+      <div class="cal-grid" id="cal-grid" aria-live="polite"></div>
+      <div class="cal-legend">
+        <span><i style="background:var(--green)"></i> Available</span>
+        <span><i style="background:var(--amber)"></i> Partially booked</span>
+        <span><i style="background:var(--red)"></i> Booked</span>
+      </div>
+      <p class="cal-note">Live availability from our booking calendar. A day shows as <strong>Booked</strong> when the car is reserved for more than 10 hours between 6:00&nbsp;AM and 11:30&nbsp;PM. Booking details are never shown.</p>
+      <p class="cal-status" id="cal-status"></p>
+    </div>
+    <div class="cal-side">
+      <span class="eyebrow">Availability</span>
+      <h3>Pick your dates, then say hello.</h3>
+      <p>The calendar updates straight from our Google Calendar, so what you see is genuinely up to date. Found a window that works? Message us on WhatsApp and we'll confirm within minutes.</p>
+      <p>Partially booked days often still have plenty of room for hourly hires — always worth asking.</p>
+      <a class="btn btn-wa" href="https://wa.me/447405295569?text=Hi!%20I'd%20like%20to%20check%20availability%20for%20the%20SEAT%20Ateca." target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 32 32" fill="#fff"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.6.8 5 2.3 7L4 29l7.2-2.3c1.9 1 4 1.6 6.3 1.6 6.6 0 12-5.4 12-12S22.6 3 16 3zm6.7 17c-.3.8-1.6 1.5-2.3 1.6-.6.1-1.3.2-3.8-.8-3.2-1.3-5.2-4.5-5.4-4.7-.2-.2-1.3-1.7-1.3-3.2s.8-2.3 1.1-2.6c.3-.3.6-.4.8-.4h.6c.2 0 .5-.1.7.5l.9 2.3c.1.2.1.4 0 .6l-.4.7-.5.6c-.2.2-.3.4-.1.7.2.3 1 1.6 2.1 2.6 1.5 1.3 2.7 1.7 3.1 1.9.4.2.6.1.8-.1l1.2-1.4c.3-.3.5-.3.8-.2l2.4 1.1c.4.2.6.3.7.5.1.1.1.7-.2 1.3z"/></svg>
+        Check dates on WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REVIEWS ================= -->
+<section class="section" id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Reviews</span>
+      <h2>Rated <span class="gold-text">5 stars</span> — and we work hard to keep it that way</h2>
+    </div>
+    <div class="review-badges">
+      <div class="badge-card">
+        <div><h3>Google Reviews</h3><div class="stars">★★★★★</div><p>Perfect 5.0 rating from our guests</p></div>
+        <div class="score">5.0</div>
+      </div>
+      <div class="badge-card">
+        <div><h3>Turo</h3><div class="stars">★★★★★</div><p>5★ host — all-star hospitality</p></div>
+        <div class="score">5.0</div>
+      </div>
+    </div>
+
+    <!-- ✏️ EDIT ME: replace these three example cards with genuine quotes copied
+         from your real Google / Turo reviews before publishing. -->
+    <div class="testimonials">
+      <article class="tst">
+        <div class="stars">★★★★★</div>
+        <p>"Spotless car, seamless pick-up right by the stadium, and the wireless CarPlay made the whole trip easy. Will absolutely rent again."</p>
+        <footer>Google review</footer>
+      </article>
+      <article class="tst">
+        <div class="stars">★★★★★</div>
+        <p>"Met us at the airport with the car ready to go. Flexible on timings and genuinely lovely to deal with."</p>
+        <footer>Turo review</footer>
+      </article>
+      <article class="tst">
+        <div class="stars">★★★★★</div>
+        <p>"The Ateca was immaculate — felt brand new. Child seat was fitted and waiting for us. Five stars, easily."</p>
+        <footer>Google review</footer>
+      </article>
+    </div>
+
+    <div class="review-links">
+      <!-- ✏️ EDIT ME: paste your real Google review link and Turo listing URL below -->
+      <a class="btn btn-ghost" href="https://www.google.com/maps/search/MAD+Vacations+Wembley" target="_blank" rel="noopener">Read our Google reviews →</a>
+      <a class="btn btn-ghost" href="https://turo.com" target="_blank" rel="noopener">See us on Turo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHATSAPP ================= -->
+<section class="wa-band" id="whatsapp">
+  <div class="wrap wa-in">
+    <div>
+      <span class="eyebrow">Instant Booking</span>
+      <h2>WhatsApp us for quotes &amp; availability</h2>
+      <p>Fastest way to book — message us and we'll reply with a quote in minutes. Or scan the QR code with your phone camera to open the chat directly.</p>
+      <div class="wa-phone">☏ +44 7405 295569</div>
+      <div style="margin-top:22px">
+        <a class="btn btn-wa" href="https://wa.me/447405295569?text=Hi%20MAD%20Vacations!%20I'd%20like%20to%20book%20the%20SEAT%20Ateca." target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="#fff"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.6.8 5 2.3 7L4 29l7.2-2.3c1.9 1 4 1.6 6.3 1.6 6.6 0 12-5.4 12-12S22.6 3 16 3zm6.7 17c-.3.8-1.6 1.5-2.3 1.6-.6.1-1.3.2-3.8-.8-3.2-1.3-5.2-4.5-5.4-4.7-.2-.2-1.3-1.7-1.3-3.2s.8-2.3 1.1-2.6c.3-.3.6-.4.8-.4h.6c.2 0 .5-.1.7.5l.9 2.3c.1.2.1.4 0 .6l-.4.7-.5.6c-.2.2-.3.4-.1.7.2.3 1 1.6 2.1 2.6 1.5 1.3 2.7 1.7 3.1 1.9.4.2.6.1.8-.1l1.2-1.4c.3-.3.5-.3.8-.2l2.4 1.1c.4.2.6.3.7.5.1.1.1.7-.2 1.3z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+    <div class="qr-card">
+      <img src="assets/whatsapp-qr.png" alt="QR code — scan to chat with MAD Vacations on WhatsApp">
+      <span>Scan to book on WhatsApp</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INQUIRY + LOCATION ================= -->
+<section class="section" id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Enquire</span>
+      <h2>Book your next <span class="gold-text">road trip</span> today</h2>
+    </div>
+    <div class="contact-grid">
+      <!-- Sends to madvacationsuk@gmail.com via FormSubmit.
+           ⚠️ FIRST TIME ONLY: submit the form once, then click the activation
+           link FormSubmit emails to madvacationsuk@gmail.com. -->
+      <form class="form-card" action="https://formsubmit.co/madvacationsuk@gmail.com" method="POST">
+        <h3>Send an enquiry</h3>
+        <p>We reply to every enquiry, usually within the hour.</p>
+        <input type="hidden" name="_subject" value="New enquiry — MAD Vacations website">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="true">
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+        <div class="f-row">
+          <div class="f-group">
+            <label for="f-name">Customer name</label>
+            <input id="f-name" name="Customer name" type="text" placeholder="Your full name" required>
+          </div>
+          <div class="f-group">
+            <label for="f-phone">Phone number</label>
+            <input id="f-phone" name="Phone number" type="tel" placeholder="+44 …" required>
+          </div>
+        </div>
+        <div class="f-group">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="Email" type="email" placeholder="you@example.com" required>
+        </div>
+        <div class="f-row">
+          <div class="f-group">
+            <label for="f-from">Dates required — from</label>
+            <input id="f-from" name="Dates required (from)" type="date" required>
+          </div>
+          <div class="f-group">
+            <label for="f-to">Dates required — to</label>
+            <input id="f-to" name="Dates required (to)" type="date" required>
+          </div>
+        </div>
+        <div class="f-group">
+          <label for="f-pick">Pick-up &amp; drop-off location</label>
+          <input id="f-pick" name="Pick-up and drop-off location" type="text" placeholder="e.g. Heathrow T5 pick-up, Wembley drop-off" required>
+        </div>
+        <div class="f-group">
+          <label for="f-msg">Anything else? (optional)</label>
+          <textarea id="f-msg" name="Message" rows="3" placeholder="Child seat, Wembley Park resident discount, long-term hire…"></textarea>
+        </div>
+        <button class="btn btn-gold" type="submit" style="width:100%;justify-content:center">Send enquiry</button>
+        <p class="form-note">Your enquiry goes straight to madvacationsuk@gmail.com. Prefer to talk? WhatsApp +44 7405 295569.</p>
+      </form>
+
+      <div>
+        <div class="loc-card">
+          <iframe title="MAD Vacations location — Pink Parking, 15 South Way, Wembley"
+            src="https://www.google.com/maps?q=Pink%20Parking%2C%2015%20South%20Way%2C%20Wembley%20HA9%200HX&output=embed"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div class="loc-info">
+            <h3>Find us by the stadium</h3>
+            <p class="addr">Pink Parking, 15 South Way, Wembley Park, London HA9 0HX</p>
+            <p>Two minutes from Wembley Stadium, with free parking near the stadium. Wembley Park &amp; Wembley Stadium stations are both a short walk away.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site">
+  <div class="wrap foot-in">
+    <a class="brand" href="#top">
+      <img src="assets/logo.png" alt="">
+      <span class="brand-name gold-text">MAD VACATIONS<span class="brand-sub">Wembley Park · London</span></span>
+    </a>
+    <div class="foot-links">
+      <a href="#car">The Car</a><a href="#availability">Availability</a><a href="#reviews">Reviews</a><a href="#contact">Enquire</a>
+    </div>
+    <small>© <span id="yr"></span> MAD Vacations · Self-drive car rental · Wembley, London · +44 7405 295569</small>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/447405295569" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.6.8 5 2.3 7L4 29l7.2-2.3c1.9 1 4 1.6 6.3 1.6 6.6 0 12-5.4 12-12S22.6 3 16 3zm6.7 17c-.3.8-1.6 1.5-2.3 1.6-.6.1-1.3.2-3.8-.8-3.2-1.3-5.2-4.5-5.4-4.7-.2-.2-1.3-1.7-1.3-3.2s.8-2.3 1.1-2.6c.3-.3.6-.4.8-.4h.6c.2 0 .5-.1.7.5l.9 2.3c.1.2.1.4 0 .6l-.4.7-.5.6c-.2.2-.3.4-.1.7.2.3 1 1.6 2.1 2.6 1.5 1.3 2.7 1.7 3.1 1.9.4.2.6.1.8-.1l1.2-1.4c.3-.3.5-.3.8-.2l2.4 1.1c.4.2.6.3.7.5.1.1.1.7-.2 1.3z"/></svg>
+</a>
+
+<script>
+/* =====================================================================
+   CONFIGURATION — availability calendar
+   =====================================================================
+   The calendar reads the PUBLIC feed of the Google Calendar below.
+   ONE-TIME SETUP in Google Calendar (calendar.google.com on desktop):
+     Settings → click the calendar on the left → "Access permissions
+     for events" → tick "Make available to public" and choose
+     "See only free/busy (hide details)".
+   That's it — no API key needed. Only event times are read; titles and
+   details are hidden by Google itself with the free/busy setting.
+
+   OPTIONAL (more robust for high traffic): create a free Google API key
+   (console.cloud.google.com → enable "Google Calendar API" → create
+   API key) and paste it below — the site will then use the official
+   API instead of the public feed.                                     */
+const GOOGLE_CALENDAR_ID = "madvacationsuk@gmail.com";
+const GOOGLE_API_KEY     = "";   // optional — leave blank to use the public feed
+
+const ICS_URL = "https://calendar.google.com/calendar/ical/" +
+                encodeURIComponent(GOOGLE_CALENDAR_ID) + "/public/basic.ics";
+/* Public feeds don't allow direct browser reads (CORS), so we route the
+   request through read-only relays. Several are tried in order.        */
+const ICS_FETCH_URLS = [
+  {url: "https://api.allorigins.win/raw?url=" + encodeURIComponent(ICS_URL)},
+  {url: "https://api.allorigins.win/get?url=" + encodeURIComponent(ICS_URL), json: true},
+  {url: "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(ICS_URL)},
+  {url: "https://corsproxy.io/?url=" + encodeURIComponent(ICS_URL)},
+  {url: ICS_URL}
+];
+
+/* Business rule: day window 06:00 – 23:30 local; >10 booked hours = Booked */
+const WINDOW_START_H = 6,  WINDOW_START_M = 0;
+const WINDOW_END_H   = 23, WINDOW_END_M   = 30;
+const BOOKED_THRESHOLD_HOURS = 10;
+
+/* ------------------ calendar rendering ------------------ */
+const DOW = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+let view = new Date(); view.setDate(1);
+let allEvents = null;        // full list of {start:Date,end:Date}
+let feedOk = false;          // true only when live data actually loaded
+let icsLoadPromise = null;
+const apiCache = {};
+
+function moveMonth(n){ view.setMonth(view.getMonth()+n); renderCalendar(); }
+function setStatus(msg){ document.getElementById("cal-status").textContent = msg; }
+
+/* --- parse an ICS date value: 20260716T090000Z | 20260716T090000 | 20260716 --- */
+function parseIcsDate(val, isEnd){
+  const m = val.match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})?(Z)?)?$/);
+  if (!m) return null;
+  const [,Y,Mo,D,h,mi,s,z] = m;
+  if (h === undefined){                       // all-day (DATE) — end date is exclusive
+    const d = new Date(+Y, Mo-1, +D, 0, 0, 0);
+    if (isEnd) d.setSeconds(-1);              // roll back to 23:59:59 of previous day
+    return d;
+  }
+  if (z) return new Date(Date.UTC(+Y, Mo-1, +D, +h, +mi, +(s||0)));
+  return new Date(+Y, Mo-1, +D, +h, +mi, +(s||0));   // TZID/floating → treat as local (UK)
+}
+
+/* --- minimal ICS parser: only start/end times (and repeat rules), nothing else --- */
+function parseIcs(text){
+  const lines = text.replace(/\r/g,"").split("\n");
+  // unfold folded lines (continuations start with a space or tab)
+  const unfolded = [];
+  for (const ln of lines){
+    if ((ln.startsWith(" ") || ln.startsWith("\t")) && unfolded.length)
+      unfolded[unfolded.length-1] += ln.slice(1);
+    else unfolded.push(ln);
+  }
+  const events = [];
+  let cur = null;
+  for (const ln of unfolded){
+    if (ln === "BEGIN:VEVENT"){ cur = {}; continue; }
+    if (ln === "END:VEVENT"){
+      if (cur && cur.start && cur.end && cur.end > cur.start){
+        events.push({start:cur.start, end:cur.end});
+        events.push(...expandRrule(cur));
+      }
+      cur = null; continue;
+    }
+    if (!cur) continue;
+    if (ln.startsWith("DTSTART")) cur.start = parseIcsDate(ln.split(":").pop().trim(), false);
+    else if (ln.startsWith("DTEND")) cur.end = parseIcsDate(ln.split(":").pop().trim(), true);
+    else if (ln.startsWith("RRULE:")) cur.rrule = ln.slice(6);
+  }
+  return events;
+}
+
+/* Expand simple repeating bookings (DAILY / WEEKLY / MONTHLY-by-date),
+   up to 18 months ahead. Times only — no details are ever read. */
+function expandRrule(ev){
+  if (!ev.rrule) return [];
+  const parts = Object.fromEntries(ev.rrule.split(";").map(kv => kv.split("=")));
+  const freq = parts.FREQ;
+  if (!["DAILY","WEEKLY","MONTHLY"].includes(freq)) return [];
+  const interval = Math.max(1, parseInt(parts.INTERVAL || "1", 10));
+  const count = parts.COUNT ? parseInt(parts.COUNT, 10) : Infinity;
+  const until = parts.UNTIL ? parseIcsDate(parts.UNTIL, false) : null;
+  const horizon = new Date(); horizon.setMonth(horizon.getMonth() + 18);
+  const durMs = ev.end - ev.start;
+  const byday = parts.BYDAY ? parts.BYDAY.split(",") : null;   // e.g. MO,WE,FR
+  const dowMap = {SU:0,MO:1,TU:2,WE:3,TH:4,FR:5,SA:6};
+  const out = [];
+  let occurrences = 1;                       // the base event counts as #1
+  let cursor = new Date(ev.start);
+  for (let guard = 0; guard < 1200 && occurrences < count; guard++){
+    if (freq === "DAILY") cursor.setDate(cursor.getDate() + interval);
+    else if (freq === "MONTHLY") cursor.setMonth(cursor.getMonth() + interval);
+    else { // WEEKLY — step one day at a time so BYDAY lists work
+      cursor.setDate(cursor.getDate() + 1);
+      const sameWeekday = byday
+        ? byday.some(d => dowMap[d] === cursor.getDay())
+        : cursor.getDay() === ev.start.getDay();
+      if (!sameWeekday) continue;
+      // respect INTERVAL for weekly: check whole weeks elapsed
+      const weeks = Math.floor((cursor - ev.start) / (7*864e5));
+      if (byday === null && weeks % interval !== 0) continue;
+    }
+    if (cursor > horizon) break;
+    if (until && cursor > until) break;
+    const s = new Date(cursor); s.setHours(ev.start.getHours(), ev.start.getMinutes(), 0, 0);
+    out.push({start: s, end: new Date(s.getTime() + durMs)});
+    occurrences++;
+  }
+  return out;
+}
+
+async function loadIcsEvents(){
+  if (allEvents) return allEvents;
+  if (icsLoadPromise) return icsLoadPromise;
+  icsLoadPromise = (async () => {
+    for (const src of ICS_FETCH_URLS){
+      try{
+        const bust = src.url.includes("?") ? "&_cb=" + Date.now() : "";
+        const res = await fetch(src.url + bust, {cache:"no-store"});
+        if (!res.ok) continue;
+        let text = await res.text();
+        if (src.json){
+          try{ text = JSON.parse(text).contents || ""; }catch(e){ continue; }
+        }
+        if (!text.includes("BEGIN:VCALENDAR")) continue;
+        allEvents = parseIcs(text);
+        feedOk = true;
+        console.info("[MAD Vacations] calendar feed loaded via", src.url.split("/")[2],
+                     "—", allEvents.length, "booking(s) found");
+        setStatus(allEvents.length === 0
+          ? "Live calendar connected — currently no bookings, all dates free."
+          : "Availability updated live from our booking calendar.");
+        return allEvents;
+      }catch(e){ /* try next source */ }
+    }
+    console.warn("[MAD Vacations] could not reach the public calendar feed:", ICS_URL);
+    setStatus("Couldn't load live availability right now — please WhatsApp us on +44 7405 295569 to check your dates. (If you're the site owner: make sure the calendar is set to public, and open the browser console for details.)");
+    allEvents = [];
+    return allEvents;
+  })();
+  return icsLoadPromise;
+}
+
+async function fetchMonthEvents(y, m){
+  const timeMin = new Date(y, m, 1);
+  const timeMax = new Date(y, m+1, 1);
+
+  /* Preferred path when an API key is configured */
+  if (GOOGLE_API_KEY){
+    const key = y+"-"+m;
+    if (apiCache[key]) return apiCache[key];
+    try{
+      const url = "https://www.googleapis.com/calendar/v3/calendars/" +
+        encodeURIComponent(GOOGLE_CALENDAR_ID) + "/events?key=" + GOOGLE_API_KEY +
+        "&singleEvents=true&orderBy=startTime&maxResults=2500" +
+        "&timeMin=" + timeMin.toISOString() + "&timeMax=" + timeMax.toISOString() +
+        "&fields=items(start,end)";               // only times — never titles or details
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(res.status);
+      const data = await res.json();
+      feedOk = true;
+      setStatus("");
+      return apiCache[key] = (data.items||[]).map(ev => ({
+        start: new Date(ev.start.dateTime || (ev.start.date + "T00:00:00")),
+        end:   new Date(ev.end.dateTime   || (ev.end.date   + "T23:59:59"))
+      }));
+    }catch(e){ /* fall through to the public feed */ }
+  }
+
+  /* Default path: public ICS feed, loaded once and filtered per month */
+  const evs = await loadIcsEvents();
+  return evs.filter(ev => ev.end > timeMin && ev.start < timeMax);
+}
+
+/* booked hours for one day inside the 06:00–23:30 window */
+function bookedHours(dayDate, events){
+  const wStart = new Date(dayDate); wStart.setHours(WINDOW_START_H, WINDOW_START_M, 0, 0);
+  const wEnd   = new Date(dayDate); wEnd.setHours(WINDOW_END_H, WINDOW_END_M, 0, 0);
+  // merge overlapping intervals clipped to the window
+  const clipped = events
+    .map(ev => [Math.max(ev.start, wStart), Math.min(ev.end, wEnd)])
+    .filter(([s,e]) => e > s)
+    .sort((a,b) => a[0]-b[0]);
+  let total = 0, curS = null, curE = null;
+  for (const [s,e] of clipped){
+    if (curE === null){ curS = s; curE = e; }
+    else if (s <= curE){ curE = Math.max(curE, e); }
+    else { total += curE - curS; curS = s; curE = e; }
+  }
+  if (curE !== null) total += curE - curS;
+  return total / 36e5; // ms → hours
+}
+
+async function renderCalendar(){
+  const y = view.getFullYear(), m = view.getMonth();
+  document.getElementById("cal-title").textContent = MONTHS[m] + " " + y;
+  const grid = document.getElementById("cal-grid");
+  grid.innerHTML = DOW.map(d => `<div class="cal-dow">${d}</div>`).join("");
+
+  const events = await fetchMonthEvents(y, m);
+  const firstDow = (new Date(y, m, 1).getDay() + 6) % 7;  // Monday-first
+  const daysIn = new Date(y, m+1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+  let html = "";
+  for (let i=0; i<firstDow; i++) html += `<div class="cal-day blank"></div>`;
+  for (let d=1; d<=daysIn; d++){
+    const day = new Date(y, m, d);
+    let cls, label;
+    if (!feedOk){
+      cls = "unknown"; label = "Availability couldn't be loaded — please contact us";
+    } else {
+      const hrs = bookedHours(day, events);
+      cls = "free"; label = "Available";
+      if (hrs > BOOKED_THRESHOLD_HOURS){ cls = "booked"; label = "Booked"; }
+      else if (hrs > 0){ cls = "partial"; label = "Partially booked"; }
+    }
+    const isToday = day.getTime() === today.getTime();
+    const isPast  = day < today;
+    html += `<div class="cal-day ${cls}${isToday?" today":""}${isPast?" past":""}"
+                  role="img" aria-label="${MONTHS[m]} ${d}: ${label}" title="${label}">
+               <span>${d}</span><span class="dot"></span>
+             </div>`;
+  }
+  grid.innerHTML += html;
+}
+renderCalendar();
+
+/* ------------------ lightbox ------------------ */
+const lb = document.getElementById("lightbox"), lbImg = document.getElementById("lb-img");
+document.querySelectorAll("[data-lb]").forEach(a => {
+  a.addEventListener("click", e => {
+    e.preventDefault();
+    lbImg.src = a.querySelector("img").src;
+    lb.classList.add("open");
+  });
+});
+function closeLB(){ lb.classList.remove("open"); lbImg.src = ""; }
+lb.addEventListener("click", e => { if (e.target === lb) closeLB(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeLB(); });
+
+/* misc */
+document.getElementById("yr").textContent = new Date().getFullYear();
+document.querySelectorAll(".nav-links a").forEach(a =>
+  a.addEventListener("click", () => document.querySelector(".nav-links").classList.remove("open")));
+</script>
+</body>
+</html>
