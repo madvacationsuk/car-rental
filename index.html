@@ -857,34 +857,68 @@ function expandRrule(ev){
   return out;
 }
 
+/* resolve with the first source that succeeds; reject only if all fail */
+function firstSuccessful(promises){
+  return new Promise((resolve, reject) => {
+    let pending = promises.length;
+    if (!pending) return reject(new Error("no sources"));
+    promises.forEach(p => p.then(resolve).catch(() => { if (--pending === 0) reject(new Error("all sources failed")); }));
+  });
+}
+
+const CACHE_KEY = "mv_cal_cache_v1";
+function saveCache(events){
+  try{
+    localStorage.setItem(CACHE_KEY, JSON.stringify({
+      t: Date.now(),
+      ev: events.map(e => [e.start.getTime(), e.end.getTime()])
+    }));
+  }catch(e){}
+}
+function loadCache(maxAgeHours){
+  try{
+    const c = JSON.parse(localStorage.getItem(CACHE_KEY));
+    if (!c || Date.now() - c.t > maxAgeHours*36e5) return null;
+    return c.ev.map(([s,e]) => ({start:new Date(s), end:new Date(e)}));
+  }catch(e){ return null; }
+}
+
 async function loadIcsEvents(){
-  if (allEvents) return allEvents;
+  if (allEvents && feedState === "ok") return allEvents;
   if (icsLoadPromise) return icsLoadPromise;
+
   icsLoadPromise = (async () => {
-    for (const src of ICS_FETCH_URLS){
-      try{
-        const bust = src.url.includes("?") ? "&_cb=" + Date.now() : "";
-        const res = await fetchWithTimeout(src.url + bust, 8000);
-        if (!res.ok) continue;
-        let text = await res.text();
-        if (src.json){
-          try{ text = JSON.parse(text).contents || ""; }catch(e){ continue; }
-        }
-        if (!text.includes("BEGIN:VCALENDAR")) continue;
-        allEvents = parseIcs(text);
-        feedState = "ok";
-        console.info("[MAD Vacations] calendar feed loaded via", src.url.split("/")[2],
-                     "—", allEvents.length, "booking(s) found");
-        setStatus(allEvents.length === 0
-          ? "Live calendar connected — currently no bookings, all dates free."
-          : "Availability updated live from our booking calendar.");
-        return allEvents;
-      }catch(e){ /* try next source */ }
+    // all relay routes race in parallel — fastest healthy one wins
+    const attempts = ICS_FETCH_URLS.map(async src => {
+      const bust = src.url.includes("?") ? "&_cb=" + Date.now() : "";
+      const res = await fetchWithTimeout(src.url + bust, 10000);
+      if (!res.ok) throw new Error(res.status);
+      let text = await res.text();
+      if (src.json) text = JSON.parse(text).contents || "";
+      if (!text.includes("BEGIN:VCALENDAR")) throw new Error("not a calendar");
+      return {events: parseIcs(text), via: src.url.split("/")[2]};
+    });
+    try{
+      const win = await firstSuccessful(attempts);
+      allEvents = win.events;
+      feedState = "ok";
+      saveCache(allEvents);
+      console.info("[MAD Vacations] calendar feed loaded via", win.via,
+                   "—", allEvents.length, "booking(s) found");
+      setStatus(allEvents.length === 0
+        ? "Live calendar connected — currently no bookings, all dates free."
+        : "Availability updated live from our booking calendar.");
+    }catch(e){
+      console.warn("[MAD Vacations] could not reach the public calendar feed:", ICS_URL);
+      const cached = loadCache(48);          // fall back to data seen in the last 48h
+      if (cached){
+        allEvents = cached; feedState = "ok";
+        setStatus("Showing recently checked availability — please confirm your dates on WhatsApp.");
+      } else {
+        allEvents = []; feedState = "fail";
+        setStatus("Couldn't load live availability right now — please WhatsApp us on +44 7405 295569 to check your dates. (If you're the site owner: make sure the calendar is set to public, and open the browser console for details.)");
+      }
     }
-    console.warn("[MAD Vacations] could not reach the public calendar feed:", ICS_URL);
-    feedState = "fail";
-    setStatus("Couldn't load live availability right now — please WhatsApp us on +44 7405 295569 to check your dates. (If you're the site owner: make sure the calendar is set to public, and open the browser console for details.)");
-    allEvents = [];
     return allEvents;
   })();
   return icsLoadPromise;
@@ -941,6 +975,12 @@ function bookedHours(dayDate, events){
 }
 
 let renderToken = 0;
+/* Instant paint on repeat visits: use availability seen in the last 48h,
+   then refresh live in the background. */
+(function primeFromCache(){
+  const cached = loadCache(48);
+  if (cached){ allEvents = cached; feedState = "cached"; }   // painted instantly, still refreshed live
+})();
 async function renderCalendar(){
   const token = ++renderToken;
   const y = view.getFullYear(), m = view.getMonth();
@@ -962,6 +1002,7 @@ function drawGrid(y, m, events){
   const daysIn = new Date(y, m+1, 0).getDate();
   const today = new Date(); today.setHours(0,0,0,0);
   if (feedState === "loading") setStatus("Checking live availability…");
+  else if (feedState === "cached") setStatus("Showing recent availability — refreshing…");
   let html = "";
   for (let i=0; i<firstDow; i++) html += `<div class="cal-day blank"></div>`;
   for (let d=1; d<=daysIn; d++){
@@ -971,7 +1012,7 @@ function drawGrid(y, m, events){
       cls = "unknown"; label = "Checking availability…";
     } else if (feedState === "fail"){
       cls = "unknown"; label = "Availability couldn't be loaded — please contact us";
-    } else {
+    } else {  // "ok" or "cached"
       const hrs = bookedHours(day, events);
       cls = "free"; label = "Available";
       if (hrs > BOOKED_THRESHOLD_HOURS){ cls = "booked"; label = "Booked"; }
