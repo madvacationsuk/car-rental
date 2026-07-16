@@ -215,6 +215,7 @@ h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.12;letter-spac
   aspect-ratio:1/.86;border-radius:10px;border:1px solid rgba(255,255,255,.06);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
   font-size:.92rem;background:rgba(255,255,255,.015);position:relative;
+  min-width:0;overflow:hidden;
 }
 .cal-day.blank{border:none;background:none}
 .cal-day.past{opacity:.32}
@@ -259,7 +260,7 @@ h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.12;letter-spac
   border-block:1px solid var(--line);
   background:radial-gradient(80% 140% at 50% 0%, rgba(212,175,55,.1), transparent 70%), var(--panel);
 }
-.wa-in{display:grid;grid-template-columns:1fr auto;gap:44px;align-items:center;padding:70px 0}
+.wa-in{display:grid;grid-template-columns:1fr auto;gap:44px;align-items:center;padding-block:70px}
 .wa-in h2{font-size:clamp(1.9rem,3.6vw,2.7rem);margin-top:14px}
 .wa-in p{color:var(--muted);margin:14px 0 26px;max-width:520px}
 .wa-phone{font-family:var(--display);font-size:1.7rem;color:var(--gold-pale);font-weight:600;letter-spacing:.04em}
@@ -331,10 +332,66 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
   .nav-toggle{display:block}
 }
 @media (max-width:560px){
+  body{overflow-x:hidden}
+  .wrap{padding:0 16px}
+  .section{padding:56px 0}
+  .section-head{margin-bottom:30px}
   .feat-grid{grid-template-columns:1fr}
+  .feat{padding:22px 18px}
+  .offer{padding:20px 16px}
   .f-row{grid-template-columns:1fr}
-  .section{padding:64px 0}
-  .cal-day{font-size:.8rem}
+  .form-card{padding:22px 18px}
+  .brand img{height:40px;width:40px}
+  .brand-name{font-size:1.05rem}
+
+  /* hero */
+  .hero-in{padding:110px 16px 0}
+  .hero h1{font-size:clamp(2.1rem,9vw,2.7rem)}
+  .hero-sub{font-size:.98rem}
+  .hero-ratings{gap:18px}
+  .btn{padding:13px 22px;font-size:.9rem}
+
+  /* gallery */
+  .gallery{gap:10px;grid-auto-rows:150px}
+  .gallery figcaption{font-size:.62rem;padding:16px 10px 8px}
+
+  /* calendar — cells sized to the screen, never wider */
+  .cal-card{padding:16px 12px}
+  .cal-top{margin-bottom:12px}
+  .cal-top h3{font-size:1.3rem}
+  .cal-nav button{width:36px;height:36px}
+  .cal-grid{gap:4px}
+  .cal-dow{font-size:.56rem;letter-spacing:.06em;padding:6px 0}
+  .cal-day{aspect-ratio:auto;min-height:46px;padding:5px 2px;gap:3px;font-size:.78rem;border-radius:8px}
+  .cal-day .dot{width:6px;height:6px}
+  .cal-day.today::after{inset:2px;border-radius:6px}
+  .cal-legend{gap:12px;font-size:.74rem;margin-top:14px}
+  .cal-note,.cal-status{font-size:.74rem}
+  .cal-side h3{font-size:1.45rem}
+
+  /* reviews */
+  .badge-card{padding:22px 18px}
+  .badge-card .score{font-size:2.3rem}
+  .badge-card .stars{font-size:1.2rem;letter-spacing:3px}
+  .tst{padding:20px 16px}
+
+  /* whatsapp band — centred and contained on phones */
+  .wa-in{padding-block:52px;gap:34px;text-align:center;justify-items:center}
+  .wa-in > div{min-width:0;max-width:100%}
+  .wa-in .eyebrow{justify-content:center}
+  .wa-in p{margin-left:auto;margin-right:auto}
+  .qr-card{margin:0 auto;width:216px}
+  .qr-card img{width:180px;height:180px}
+  .wa-phone{font-size:1.35rem;word-break:keep-all}
+
+  .loc-card iframe{height:250px}
+  .loc-info{padding:20px 16px}
+  .book-direct{font-size:.85rem;padding:13px 16px}
+  .wa-float{width:52px;height:52px;right:16px;bottom:16px}
+}
+@media (max-width:360px){
+  .cal-day{min-height:42px;font-size:.72rem}
+  .hero h1{font-size:2rem}
 }
 </style>
 </head>
@@ -547,7 +604,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
         <span><i style="background:var(--amber)"></i> Partially booked</span>
         <span><i style="background:var(--red)"></i> Booked</span>
       </div>
-      <p class="cal-note">Live availability from our booking calendar. A day shows as <strong>Booked</strong> when the car is reserved for more than 10 hours between 6:00&nbsp;AM and 11:30&nbsp;PM. Booking details are never shown.</p>
+      <p class="cal-note">Live availability from our booking calendar.</p>
       <p class="cal-status" id="cal-status"></p>
     </div>
     <div class="cal-side">
@@ -736,7 +793,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
    API key) and paste it below — the site will then use the official
    API instead of the public feed.                                     */
 const GOOGLE_CALENDAR_ID = "madvacationsuk@gmail.com";
-const GOOGLE_API_KEY     = "";   // optional — leave blank to use the public feed
+const GOOGLE_API_KEY     = "AIzaSyAWXyiY_gLVcQ2pLKxwtxHsIprmg3yDWV4";   // official Google Calendar API — relays below are only a fallback
 
 const ICS_URL = "https://calendar.google.com/calendar/ical/" +
                 encodeURIComponent(GOOGLE_CALENDAR_ID) + "/public/basic.ics";
@@ -773,7 +830,12 @@ async function fetchWithTimeout(url, ms){
 }
 
 function moveMonth(n){ view.setMonth(view.getMonth()+n); renderCalendar(); }
-function setStatus(msg){ document.getElementById("cal-status").textContent = msg; }
+function setStatus(msg){ document.getElementById("cal-status").innerHTML = msg; }
+function retryCalendar(){
+  allEvents = null; feedState = "loading"; icsLoadPromise = null;
+  renderCalendar();
+  return false;
+}
 
 /* --- parse an ICS date value: 20260716T090000Z | 20260716T090000 | 20260716 --- */
 function parseIcsDate(val, isEnd){
@@ -888,13 +950,22 @@ async function loadIcsEvents(){
   if (icsLoadPromise) return icsLoadPromise;
 
   icsLoadPromise = (async () => {
+    let calendarNotPublic = false;
     // all relay routes race in parallel — fastest healthy one wins
     const attempts = ICS_FETCH_URLS.map(async src => {
       const bust = src.url.includes("?") ? "&_cb=" + Date.now() : "";
       const res = await fetchWithTimeout(src.url + bust, 10000);
+      if (res.status === 404) { calendarNotPublic = true; throw new Error("404"); }
       if (!res.ok) throw new Error(res.status);
       let text = await res.text();
-      if (src.json) text = JSON.parse(text).contents || "";
+      if (src.json){
+        const j = JSON.parse(text);
+        if (j.status && j.status.http_code && j.status.http_code !== 200){
+          if (j.status.http_code === 404) calendarNotPublic = true;
+          throw new Error("upstream " + j.status.http_code);
+        }
+        text = j.contents || "";
+      }
       if (!text.includes("BEGIN:VCALENDAR")) throw new Error("not a calendar");
       return {events: parseIcs(text), via: src.url.split("/")[2]};
     });
@@ -909,14 +980,17 @@ async function loadIcsEvents(){
         ? "Live calendar connected — currently no bookings, all dates free."
         : "Availability updated live from our booking calendar.");
     }catch(e){
-      console.warn("[MAD Vacations] could not reach the public calendar feed:", ICS_URL);
+      console.warn("[MAD Vacations] could not reach the public calendar feed:", ICS_URL,
+                   calendarNotPublic ? "(Google reports 404 — the calendar is NOT public yet)" : "(relay services unreachable)");
       const cached = loadCache(48);          // fall back to data seen in the last 48h
       if (cached){
         allEvents = cached; feedState = "ok";
-        setStatus("Showing recently checked availability — please confirm your dates on WhatsApp.");
+        setStatus('Showing recently checked availability — please confirm your dates on WhatsApp. <a href="#" onclick="return retryCalendar()">Check again</a>');
       } else {
         allEvents = []; feedState = "fail";
-        setStatus("Couldn't load live availability right now — please WhatsApp us on +44 7405 295569 to check your dates. (If you're the site owner: make sure the calendar is set to public, and open the browser console for details.)");
+        setStatus(calendarNotPublic
+          ? 'Availability is temporarily unavailable — please WhatsApp us on +44 7405 295569 to check your dates. <a href="#" onclick="return retryCalendar()">Try again</a><br><em>(Site owner: Google reports this calendar is not public yet. On calendar.google.com → ⚙ Settings → your calendar → “Access permissions for events” → tick “Make available to public”. The phone app cannot do this.)</em>'
+          : 'Couldn\'t load live availability right now — please WhatsApp us on +44 7405 295569 to check your dates. <a href="#" onclick="return retryCalendar()">Try again</a><br><em>(Site owner: the calendar feed relays are unreachable — see the browser console. The permanent fix is a free Google API key; see the README.)</em>');
       }
     }
     return allEvents;
@@ -939,10 +1013,17 @@ async function fetchMonthEvents(y, m){
         "&timeMin=" + timeMin.toISOString() + "&timeMax=" + timeMax.toISOString() +
         "&fields=items(start,end)";               // only times — never titles or details
       const res = await fetchWithTimeout(url, 8000);
-      if (!res.ok) throw new Error(res.status);
+      if (!res.ok){
+        const body = await res.text().catch(()=> "");
+        console.warn("[MAD Vacations] Google Calendar API returned", res.status,
+          res.status === 403 ? "(usually the key's website restriction doesn't match this address — check the key settings in console.cloud.google.com)" :
+          res.status === 404 ? "(the calendar is not public — tick 'Make available to public' in Google Calendar settings)" : "", body.slice(0,300));
+        throw new Error(res.status);
+      }
       const data = await res.json();
       feedState = "ok";
-      setStatus("");
+      setStatus("Availability updated live from our booking calendar.");
+      console.info("[MAD Vacations] availability loaded via the official Google Calendar API");
       return apiCache[key] = (data.items||[]).map(ev => ({
         start: new Date(ev.start.dateTime || (ev.start.date + "T00:00:00")),
         end:   new Date(ev.end.dateTime   || (ev.end.date   + "T23:59:59"))
