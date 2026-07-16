@@ -951,10 +951,10 @@ async function loadIcsEvents(){
 
   icsLoadPromise = (async () => {
     let calendarNotPublic = false;
-    // all relay routes race in parallel — fastest healthy one wins
+    // all relay routes race in parallel — fastest healthy one wins;
+    // generous 25s patience per route (some relays are slow but succeed)
     const attempts = ICS_FETCH_URLS.map(async src => {
-      const bust = src.url.includes("?") ? "&_cb=" + Date.now() : "";
-      const res = await fetchWithTimeout(src.url + bust, 10000);
+      const res = await fetchWithTimeout(src.url, 25000);
       if (res.status === 404) { calendarNotPublic = true; throw new Error("404"); }
       if (!res.ok) throw new Error(res.status);
       let text = await res.text();
@@ -988,9 +988,13 @@ async function loadIcsEvents(){
         setStatus('Showing recently checked availability — please confirm your dates on WhatsApp. <a href="#" onclick="return retryCalendar()">Check again</a>');
       } else {
         allEvents = []; feedState = "fail";
-        setStatus(calendarNotPublic
-          ? 'Availability is temporarily unavailable — please WhatsApp us on +44 7405 295569 to check your dates. <a href="#" onclick="return retryCalendar()">Try again</a><br><em>(Site owner: Google reports this calendar is not public yet. On calendar.google.com → ⚙ Settings → your calendar → “Access permissions for events” → tick “Make available to public”. The phone app cannot do this.)</em>'
-          : 'Couldn\'t load live availability right now — please WhatsApp us on +44 7405 295569 to check your dates. <a href="#" onclick="return retryCalendar()">Try again</a><br><em>(Site owner: the calendar feed relays are unreachable — see the browser console. The permanent fix is a free Google API key; see the README.)</em>');
+        if (location.protocol === "file:"){
+          setStatus('Live availability couldn\'t be checked from this local copy. <a href="#" onclick="return retryCalendar()">Try again</a><br><em>(Site owner: you\'re opening the file directly on your computer, so the domain-restricted Google key can\'t be used — this is expected. The calendar works on the published website.)</em>');
+        } else {
+          setStatus(calendarNotPublic
+            ? 'Availability is temporarily unavailable — please WhatsApp us on +44 7405 295569 to check your dates. <a href="#" onclick="return retryCalendar()">Try again</a><br><em>(Site owner: Google reports this calendar is not public yet. On calendar.google.com → ⚙ Settings → your calendar → “Access permissions for events” → tick “Make available to public”. The phone app cannot do this.)</em>'
+            : 'Couldn\'t load live availability right now — please WhatsApp us on +44 7405 295569 to check your dates. <a href="#" onclick="return retryCalendar()">Try again</a><br><em>(Site owner: Google and the backup relays are both unreachable — open the browser console (F12) for the exact error.)</em>');
+        }
       }
     }
     return allEvents;
