@@ -1018,7 +1018,7 @@ async function loadIcsEvents(){
                    "—", allEvents.length, "booking(s) found");
       setStatus(allEvents.length === 0
         ? "Live calendar connected — currently no bookings, all dates free."
-        : "Availability updated live from our booking calendar.");
+        : "Availability updated from our booking calendar (backup feed — very recent changes may take a little while to appear).");
     }catch(e){
       console.warn("[MAD Vacations] all availability sources failed:", lastErrors);
       const cached = loadCache(168);         // fall back to data seen in the last 7 days
@@ -1051,7 +1051,8 @@ async function fetchMonthEvents(y, m){
   /* Preferred path when an API key is configured */
   if (GOOGLE_API_KEY){
     const key = y+"-"+m;
-    if (apiCache[key]) return apiCache[key];
+    const hit = apiCache[key];
+    if (hit && Date.now() - hit.t < 5*60*1000) return hit.events;   // refresh after 5 min
     try{
       const url = "https://www.googleapis.com/calendar/v3/calendars/" +
         encodeURIComponent(GOOGLE_CALENDAR_ID) + "/events?key=" + GOOGLE_API_KEY +
@@ -1074,10 +1075,16 @@ async function fetchMonthEvents(y, m){
       feedState = "ok";
       setStatus("Availability updated live from our booking calendar.");
       console.info("[MAD Vacations] availability loaded via the official Google Calendar API");
-      return apiCache[key] = (data.items||[]).map(ev => ({
-        start: new Date(ev.start.dateTime || (ev.start.date + "T00:00:00")),
-        end:   new Date(ev.end.dateTime   || (ev.end.date   + "T23:59:59"))
-      }));
+      return (apiCache[key] = {t: Date.now(), events: (data.items||[]).map(ev => {
+        // timed events carry dateTime; all-day events carry date with an EXCLUSIVE end
+        const start = ev.start.dateTime
+          ? new Date(ev.start.dateTime)
+          : new Date(ev.start.date + "T00:00:00");
+        let end;
+        if (ev.end.dateTime) end = new Date(ev.end.dateTime);
+        else { end = new Date(ev.end.date + "T00:00:00"); end.setSeconds(-1); } // roll back to 23:59:59 of the previous day
+        return {start, end};
+      }).filter(ev => ev.end > ev.start)}).events;
     }catch(e){ /* fall through to the public feed */ }
   }
 
